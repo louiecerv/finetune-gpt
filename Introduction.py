@@ -1,42 +1,38 @@
 import streamlit as st
 import openai
 
+# Set your OpenAI API key
+openai.api_key = st.secrets["API_key"
 
-from openai import AsyncOpenAI
-from openai import OpenAI
+# Load the input document
+with open("input_document.txt", "r") as f:
+    document_text = f.read()
 
-client = AsyncOpenAI(
-    # This is the default and can be omitted
-    api_key=st.secrets["API_key"],
+# Example continuation to generate text
+continuation = "Summarize the key points of the document:"
+
+# Fine-tune the model on the input document
+response = openai.Finetune.create(
+    engine="text-davinci-003",  # Choose a suitable model
+    prompt=document_text,  # Use the document text as the prompt
+    # No training data is needed for this type of fine-tuning
+    validation_split=0.1,
+    validation_data_size=100,
+    batch_size=4,  # Adjust batch size as needed
+    max_tokens=150,  # Reduce token usage during fine-tuning
+    epochs=2,  # Adjust the number of training epochs
 )
 
-async def generate_response(question, context):
-  model = "gpt-4-0125-preview"
-  #model - "gpt-3.5-turbo"
+# Generate text using the fine-tuned model
+generated_text = openai.Completion.create(
+    engine=response.finetuned_model,
+    prompt=continuation,  # Use a short prompt for efficient generation
+    max_tokens=50,  # Further reduce tokens for the generated text
+)
 
-  completion = await client.chat.completions.create(model=model, messages=[{"role": "user", "content": question}, {"role": "system", "content": context}])
-  return completion.choices[0].message.content
-
-
-async def app():
-  st.title("OpenAI Text Generation App")
-  
-  # Text input for user question
-  question = st.text_input("Enter your question:")
-  
-  # Text area input for the context
-  context = st.text_area("Enter the context:")
-  
-  # Button to generate response
-  if st.button("Generate Response"):
-      if question and context:
-          response = await generate_response(question, context)
-          st.write("Response:")
-          st.write(response)
-      else:
-          st.error("Please enter both question and context.")
+def app():
+  st.write(generated_text.choices[0].text.strip())
 
 #run the app
 if __name__ == "__main__":
-  import asyncio
-  asyncio.run(app())
+  app()
