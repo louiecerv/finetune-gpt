@@ -6,7 +6,7 @@ from openai import OpenAI
 client = OpenAI(api_key=st.secrets["API_key"])
 
 # Fine-tune the model (replace placeholders with your actual data)
-fine_tuned_model = client.fine_tunes.create(
+fine_tuned_model = client.fine_tuning.create(
     model="text-davinci-003",  # Choose the model you want to fine-tune
     fine_tune_data="input_document.txt",  # Path to your fine-tuning data
     prompt="Your fine-tuning prompt here",  # Prompt for fine-tuning
