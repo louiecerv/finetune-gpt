@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # Set your OpenAI API key
-openai.api_key = st.secrets["API_key"
+openai.api_key = st.secrets["API_key"]
 
 # Load the input document
 with open("input_document.txt", "r") as f:
