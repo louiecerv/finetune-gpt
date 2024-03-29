@@ -1,11 +1,8 @@
 import streamlit as st
 import openai
 
-# Set your OpenAI API key
-openai.api_key = st.secrets["API_key"]
-
 # Create an OpenAI client
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key=st.secrets["API_key"])
 
 # Fine-tune the model (replace placeholders with your actual data)
 fine_tuned_model = client.fine_tunes.create(
