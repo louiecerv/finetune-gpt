@@ -5,9 +5,10 @@ from openai import OpenAI
 # Create an OpenAI client
 client = OpenAI(api_key=st.secrets["API_key"])
 
+# Create a fine-tuned model
 fine_tuned_model = client.fine_tuning.create(
-    model="gpt-3.5-turbo",
-    training_file="your_training_data.txt"  # Replace with your actual training data
+    model="gpt-3.5-turbo",  # Choose the model you want to fine-tune
+    training_file="input_document.txt"
 )
 
 # Save the fine-tuned model
