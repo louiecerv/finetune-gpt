@@ -4,8 +4,11 @@ import openai
 # Set your OpenAI API key
 openai.api_key = st.secrets["API_key"]
 
+# Create an OpenAI client
+client = OpenAI(api_key=api_key)
+
 # Fine-tune the model (replace placeholders with your actual data)
-fine_tuned_model = openai.FineTune.create(
+fine_tuned_model = client.fine_tunes.create(
     model="text-davinci-003",  # Choose the model you want to fine-tune
     fine_tune_data="input_document.txt",  # Path to your fine-tuning data
     prompt="Your fine-tuning prompt here",  # Prompt for fine-tuning
@@ -17,11 +20,12 @@ fine_tuned_model = openai.FineTune.create(
 # Save the fine-tuned model
 fine_tuned_model.save("fine_tuned_model")
 
-# Load the fine-tuned model
-loaded_model = openai.Model.load("fine_tuned_model")
 
-  # Streamlit app
+#Load the fine-tuned model
+loaded_model = client.models.retrieve("fine_tuned_model")
+
 def app():
+  # Streamlit app
   st.title("OpenAI Fine-Tuned Model Demo")
 
   # Function to generate response
