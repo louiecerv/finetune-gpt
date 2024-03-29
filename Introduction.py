@@ -5,14 +5,9 @@ from openai import OpenAI
 # Create an OpenAI client
 client = OpenAI(api_key=st.secrets["API_key"])
 
-# Fine-tune the model (replace placeholders with your actual data)
 fine_tuned_model = client.fine_tuning.create(
-    model="text-davinci-003",  # Choose the model you want to fine-tune
-    fine_tune_data="input_document.txt",  # Path to your fine-tuning data
-    prompt="Your fine-tuning prompt here",  # Prompt for fine-tuning
-    examples=100,  # Number of examples to fine-tune on
-    labels=["positive", "negative"],  # Labels for classification tasks
-    epochs=3,  # Number of epochs for fine-tuning
+    model="gpt-3.5-turbo",
+    training_file="your_training_data.txt"  # Replace with your actual training data
 )
 
 # Save the fine-tuned model
